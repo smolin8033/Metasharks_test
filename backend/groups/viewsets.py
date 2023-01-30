@@ -10,7 +10,6 @@ from groups.serializers import StudyGroupSerializer, StudyGroupListSerializer
 
 @extend_schema(tags=["Учебные группы"])
 class StudyGroupViewSet(ModelViewSet):
-    queryset = StudyGroup.objects.all()
     serializer_class = StudyGroupSerializer
     http_method_names = ['get', 'post', 'patch', 'delete']
     authentication_classes = [BasicAuthentication]

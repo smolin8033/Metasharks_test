@@ -1,5 +1,6 @@
 from rest_framework.routers import DefaultRouter
 
+from config.loggers import logger
 from .viewsets import StudyGroupViewSet
 
 router = DefaultRouter()
