@@ -4,6 +4,9 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
+from fields.routers import router as fields_router
+from groups.routers import router as groups_router
+from subjects.routers import router as subjects_router
 from users.routers import router as users_router
 
 urlpatterns = [
@@ -15,6 +18,9 @@ urlpatterns = [
         name="swagger-ui",
     ),
     path("api/", include(users_router.urls)),
+    path("api/", include(groups_router.urls)),
+    path("api/", include(subjects_router.urls)),
+    path("api/", include(fields_router.urls)),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 

@@ -6,4 +6,5 @@ GENDER_CHOICES = (
 ROLE_CHOICES = (
     ('M', 'Mentor'),
     ('S', 'Student'),
+    ('D', 'Director')
 )

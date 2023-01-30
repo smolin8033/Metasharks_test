@@ -3,6 +3,12 @@ from django.db import models
 
 class Field(models.Model):
     """
-    Направления подготовки. За каждым закреплен один куратор. У них множество учебных дисциплин.
+    Направление подготовки.
+    За каждым закреплен один куратор.
+    У него множество учебных дисциплин.
+    К нему прикреплено множество учебных групп.
     """
     name = models.CharField(max_length=40, unique=True, blank=False, null=False)
+
+    def __str__(self):
+        return self.name
