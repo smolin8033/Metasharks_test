@@ -1,18 +1,19 @@
+# flake8: noqa
+
 import pytest
 from django.urls import reverse
 from rest_framework import status
 
 from fields.models import Field
 from subjects.models import Subject
-from tests.faked_data.factories import UserFactory, FieldFactory, SubjectFactory
+from tests.faked_data.factories import FieldFactory, SubjectFactory, UserFactory
 
 pytestmark = pytest.mark.django_db
 
+
 class TestFieldViewSet:
     def test_action_no_auth(self, api_client):
-        data = {
-            "name": "test_name"
-        }
+        data = {"name": "test_name"}
 
         url = reverse("fields-list")
 
@@ -21,9 +22,7 @@ class TestFieldViewSet:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_action_no_perms_mentor(self, api_client):
-        data = {
-            "name": "test_name"
-        }
+        data = {"name": "test_name"}
 
         mentor = UserFactory(role="M")
 
@@ -35,9 +34,7 @@ class TestFieldViewSet:
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_action_no_perms_student(self, api_client):
-        data = {
-            "name": "test_name"
-        }
+        data = {"name": "test_name"}
 
         student = UserFactory(role="S")
 
@@ -49,15 +46,13 @@ class TestFieldViewSet:
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_action_create_by_director(self, api_client):
-        data = {
-            "name": "test_name"
-        }
+        data = {"name": "test_name"}
 
         url = reverse("fields-list")
 
         director = UserFactory(role="D")
 
-        assert director.role == 'D'
+        assert director.role == "D"
         assert Field.objects.count() == 1
 
         api_client.force_authenticate(user=director)
@@ -85,9 +80,7 @@ class TestFieldViewSet:
 
         url = reverse("fields-list")
 
-        director = UserFactory(
-            role="D", field=None, study_group=None
-        )
+        director = UserFactory(role="D", field=None, study_group=None)
 
         api_client.force_authenticate(user=director)
         with django_assert_max_num_queries(1):
@@ -135,9 +128,7 @@ class TestFieldViewSet:
 
         assert Field.objects.count() == 1
 
-        data = {
-            "name": "test_name"
-        }
+        data = {"name": "test_name"}
 
         url = reverse("fields-detail", kwargs={"pk": field.pk})
 

@@ -3,15 +3,14 @@ from django.urls import reverse
 from rest_framework import status
 
 from subjects.models import Subject
-from tests.faked_data.factories import UserFactory, FieldFactory, SubjectFactory
+from tests.faked_data.factories import FieldFactory, SubjectFactory, UserFactory
 
 pytestmark = pytest.mark.django_db
 
+
 class TestSubjectViewSet:
     def test_action_no_auth(self, api_client):
-        data = {
-            "name": "test_name"
-        }
+        data = {"name": "test_name"}
 
         url = reverse("subjects-list")
 
@@ -20,9 +19,7 @@ class TestSubjectViewSet:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_action_no_perms_mentor(self, api_client):
-        data = {
-            "name": "test_name"
-        }
+        data = {"name": "test_name"}
 
         mentor = UserFactory(role="M")
 
@@ -34,9 +31,7 @@ class TestSubjectViewSet:
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_action_no_perms_student(self, api_client):
-        data = {
-            "name": "test_name"
-        }
+        data = {"name": "test_name"}
 
         student = UserFactory(role="S")
 
@@ -50,16 +45,13 @@ class TestSubjectViewSet:
     def test_action_create_by_director(self, api_client):
         field = FieldFactory()
 
-        data = {
-            "name": "test_name",
-            "field": field.id
-        }
+        data = {"name": "test_name", "field": field.id}
 
         url = reverse("subjects-list")
 
         director = UserFactory(role="D")
 
-        assert director.role == 'D'
+        assert director.role == "D"
         assert Subject.objects.count() == 0
 
         api_client.force_authenticate(user=director)
@@ -90,9 +82,7 @@ class TestSubjectViewSet:
 
         url = reverse("subjects-list")
 
-        director = UserFactory(
-            role="D"
-        )
+        director = UserFactory(role="D")
 
         api_client.force_authenticate(user=director)
         with django_assert_max_num_queries(1):
@@ -140,10 +130,7 @@ class TestSubjectViewSet:
 
         assert Subject.objects.count() == 1
 
-        data = {
-            "name": "test_name",
-            "field": field2.id
-        }
+        data = {"name": "test_name", "field": field2.id}
 
         url = reverse("subjects-detail", kwargs={"pk": subject.pk})
 

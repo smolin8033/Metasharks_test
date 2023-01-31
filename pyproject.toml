@@ -1,0 +1,16 @@
+[tool.flake8]
+per-file-ignores = [
+    '__init__.py:F401', # module imported but unused
+]
+max-line-length = 120
+count = true
+
+[tool.black]
+line-length = 120
+include = '\.pyi?$'
+force-exclude = '/migrations/'
+
+[tool.isort] # only applying changes if they don't introduce syntax errors
+atomic = true
+skip_gitignore = true
+profile = 'black'

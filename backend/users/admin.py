@@ -9,12 +9,11 @@ class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
 
+
 class MyUserAdmin(UserAdmin):
     form = MyUserChangeForm
 
-    fieldsets = UserAdmin.fieldsets + (
-            (None, {'fields': ('role', 'gender', 'field', 'study_group')}),
-    )
+    fieldsets = UserAdmin.fieldsets + ((None, {"fields": ("role", "gender", "field", "study_group")}),)
 
 
 admin.site.register(User, MyUserAdmin)

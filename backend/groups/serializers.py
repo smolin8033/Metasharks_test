@@ -8,13 +8,13 @@ from subjects.serializers import SubjectRetrieveSerializer
 class StudyGroupRetrieveSerializer(ModelSerializer):
     class Meta:
         model = StudyGroup
-        fields = ('id', 'number')
+        fields = ("id", "number")
 
 
 class StudyGroupSerializer(ModelSerializer):
     class Meta:
         model = StudyGroup
-        fields = '__all__'
+        fields = "__all__"
 
 
 class StudyGroupListSerializer(ModelSerializer):
@@ -23,4 +23,4 @@ class StudyGroupListSerializer(ModelSerializer):
 
     class Meta:
         model = StudyGroup
-        fields = ('id', 'number', 'subjects', 'field')
+        fields = ("id", "number", "subjects", "field")

@@ -3,16 +3,19 @@ from django.urls import reverse
 from rest_framework import status
 
 from groups.models import StudyGroup
-from tests.faked_data.factories import UserFactory, FieldFactory, StudyGroupFactory, SubjectFactory
+from tests.faked_data.factories import (
+    FieldFactory,
+    StudyGroupFactory,
+    SubjectFactory,
+    UserFactory,
+)
 
 pytestmark = pytest.mark.django_db
 
 
 class TestStudyGroupViewSet:
     def test_action_no_auth(self, api_client):
-        data = {
-            "number": 10
-        }
+        data = {"number": 10}
 
         url = reverse("study_groups-list")
 
@@ -21,9 +24,7 @@ class TestStudyGroupViewSet:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     def test_action_no_perms_director(self, api_client):
-        data = {
-            "number": 10
-        }
+        data = {"number": 10}
 
         director = UserFactory(role="D")
 
@@ -35,9 +36,7 @@ class TestStudyGroupViewSet:
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_action_no_perms_student(self, api_client):
-        data = {
-            "number": 10
-        }
+        data = {"number": 10}
 
         student = UserFactory(role="S")
 
@@ -49,15 +48,13 @@ class TestStudyGroupViewSet:
         assert response.status_code == status.HTTP_403_FORBIDDEN
 
     def test_action_create_by_mentor(self, api_client):
-        data = {
-            "number": 10
-        }
+        data = {"number": 10}
 
         url = reverse("study_groups-list")
 
         mentor = UserFactory(role="M")
 
-        assert mentor.role == 'M'
+        assert mentor.role == "M"
         assert StudyGroup.objects.count() == 1
 
         api_client.force_authenticate(user=mentor)
@@ -90,9 +87,7 @@ class TestStudyGroupViewSet:
 
         url = reverse("study_groups-list")
 
-        mentor = UserFactory(
-            role="M", field=field, study_group=None
-        )
+        mentor = UserFactory(role="M", field=field, study_group=None)
 
         api_client.force_authenticate(user=mentor)
         with django_assert_max_num_queries(3):
@@ -142,10 +137,7 @@ class TestStudyGroupViewSet:
 
         assert StudyGroup.objects.count() == 1
 
-        data = {
-            "number": 25,
-            "field": field2.id
-        }
+        data = {"number": 25, "field": field2.id}
 
         url = reverse("study_groups-detail", kwargs={"pk": group.pk})
 

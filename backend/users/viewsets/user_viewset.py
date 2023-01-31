@@ -5,13 +5,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from config.permissions import MentorPermission
 from users.models import User
-from users.serializers import UserSerializer, UserListRetrieveSerializer
-
-
-
-# TODO group endpoints tests
-# TODO subject endpoints tests
-# TODO field endpoints tests
+from users.serializers import UserListRetrieveSerializer, UserSerializer
 
 # TODO action add student
 
@@ -22,17 +16,21 @@ from users.serializers import UserSerializer, UserListRetrieveSerializer
 # TODO endpoint
 # TODO celery tests
 
-# TODO flake8
 # TODO mypy
+
+# TODO final linting
+
 
 @extend_schema(tags=["Пользователи"])
 class UserViewSet(ModelViewSet):
-    http_method_names = ['get', 'post', 'patch', 'delete']
+    http_method_names = ["get", "post", "patch", "delete"]
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated, MentorPermission]
 
     def get_queryset(self):
-        queryset = User.objects.select_related("study_group", "field").filter(study_group__field=self.request.user.field)
+        queryset = User.objects.select_related("study_group", "field").filter(
+            study_group__field=self.request.user.field
+        )
         return queryset
 
     def get_serializer_class(self):

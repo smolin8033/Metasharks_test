@@ -12,6 +12,6 @@ from fields.serializers import FieldSerializer
 class FieldViewSet(ModelViewSet):
     queryset = Field.objects.all()
     serializer_class = FieldSerializer
-    http_method_names = ['get', 'post', 'patch', 'delete']
+    http_method_names = ["get", "post", "patch", "delete"]
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated, DirectorPermission]

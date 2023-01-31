@@ -5,19 +5,21 @@ from rest_framework.viewsets import ModelViewSet
 
 from config.permissions import MentorPermission
 from groups.models import StudyGroup
-from groups.serializers import StudyGroupSerializer, StudyGroupListSerializer
+from groups.serializers import StudyGroupListSerializer, StudyGroupSerializer
 
 
 @extend_schema(tags=["Учебные группы"])
 class StudyGroupViewSet(ModelViewSet):
     serializer_class = StudyGroupSerializer
-    http_method_names = ['get', 'post', 'patch', 'delete']
+    http_method_names = ["get", "post", "patch", "delete"]
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated, MentorPermission]
 
     def get_queryset(self):
-        queryset = StudyGroup.objects.select_related("field").prefetch_related("subjects").filter(
-            field=self.request.user.field
+        queryset = (
+            StudyGroup.objects.select_related("field")
+            .prefetch_related("subjects")
+            .filter(field=self.request.user.field)
         )
         return queryset
 

@@ -7,13 +7,13 @@ from subjects.models import Subject
 class SubjectSerializer(ModelSerializer):
     class Meta:
         model = Subject
-        fields = '__all__'
+        fields = "__all__"
 
 
 class SubjectRetrieveSerializer(ModelSerializer):
     class Meta:
         model = Subject
-        fields = ('id', 'name')
+        fields = ("id", "name")
 
 
 class SubjectListSerializer(ModelSerializer):
@@ -21,4 +21,4 @@ class SubjectListSerializer(ModelSerializer):
 
     class Meta:
         model = Subject
-        fields = ('id', 'name', 'field')
+        fields = ("id", "name", "field")

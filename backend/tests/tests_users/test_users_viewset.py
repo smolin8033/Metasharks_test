@@ -1,9 +1,10 @@
 import pytest
+from django.db import IntegrityError
 from django.urls import reverse
 from rest_framework import status
 
 from groups.models import StudyGroup
-from tests.faked_data.factories import UserFactory, FieldFactory, StudyGroupFactory
+from tests.faked_data.factories import FieldFactory, StudyGroupFactory, UserFactory
 from users.models import User
 
 pytestmark = pytest.mark.django_db
@@ -29,7 +30,7 @@ class TestUserViewSet:
         }
 
         user = UserFactory()
-        user.role = 'D'
+        user.role = "D"
 
         url = reverse("users-list")
 
@@ -45,7 +46,7 @@ class TestUserViewSet:
         }
 
         user = UserFactory()
-        user.role = 'S'
+        user.role = "S"
 
         url = reverse("users-list")
 
@@ -68,9 +69,9 @@ class TestUserViewSet:
         url = reverse("users-list")
 
         user = UserFactory()
-        user.role = 'M'
+        user.role = "M"
 
-        assert user.role == 'M'
+        assert user.role == "M"
 
         api_client.force_authenticate(user=user)
         response = api_client.post(url, data=data)
@@ -78,7 +79,7 @@ class TestUserViewSet:
         assert response.status_code == status.HTTP_201_CREATED
         assert len(User.objects.all()) == 2
 
-        new_user = User.objects.get(username='test_username')
+        new_user = User.objects.get(username="test_username")
 
         assert data["first_name"] == new_user.first_name
         assert data["last_name"] == new_user.last_name
@@ -105,9 +106,7 @@ class TestUserViewSet:
 
         url = reverse("users-list")
 
-        user = UserFactory(
-            role="M", field=field, study_group=None
-        )
+        user = UserFactory(role="M", field=field, study_group=None)
 
         api_client.force_authenticate(user=user)
         with django_assert_max_num_queries(3):
@@ -117,17 +116,26 @@ class TestUserViewSet:
         json_response = response.json()
         assert len(json_response) == 4
 
-    # def test_constraint(self, api_client, django_assert_max_num_queries):
-    #     """Не работает"""
-    #     field = FieldFactory()
-    #     group = StudyGroupFactory(field=field)
-    #     users_array = []
-    #     for i in range(22):
-    #         users_array.append(UserFactory(study_group=group, username=f'username{i}'))
-    #
-    #     assert users_array[0].study_group == group
-    #     assert users_array[1].study_group == group
-    #     assert len(users_array) == 22
+    def test_constraint_with_20_students(self, api_client, django_assert_max_num_queries):
+        field = FieldFactory()
+        group = StudyGroupFactory(field=field)
+        users_array = []
+        for i in range(20):
+            users_array.append(UserFactory(study_group=group, username=f"username{i}"))
+
+        assert users_array[0].study_group == group
+        assert users_array[1].study_group == group
+        assert len(users_array) == 20
+
+    def test_constraint_more_20_students(self, api_client, django_assert_max_num_queries):
+        field = FieldFactory()
+        group = StudyGroupFactory(field=field)
+        users_array = []
+        for i in range(20):
+            users_array.append(UserFactory(study_group=group, username=f"username{i}"))
+
+        with pytest.raises(IntegrityError):
+            users_array.append(UserFactory(study_group=group, username="test_username"))
 
     def test_action_retrieve_student(self, api_client, django_assert_max_num_queries):
         field = FieldFactory()

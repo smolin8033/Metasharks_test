@@ -40,6 +40,25 @@ services:
       - backend
     restart: always
 
+  redis:
+    image: redis:alpine
+    restart: always
+    expose:
+      - '6379'
+    ports:
+      - '6379:6379'
+
+  celery:
+    build: ./backend
+    command: celery -A config worker --loglevel=info
+    volumes:
+      - ./backend:/usr/src/university
+    env_file:
+      - .env
+    depends_on:
+      - redis
+      - backend
+
 volumes:
   postgres_data:
   media_volume:

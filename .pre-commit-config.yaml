@@ -1,0 +1,37 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+        exclude: 'backend/.*./migrations/'
+      - id: debug-statements
+      - id: mixed-line-ending
+        args: [ '--fix=lf' ]
+        description: Forces to replace line ending by the UNIX 'lf' character.
+      - id: check-merge-conflict
+      - id: check-ast
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v1.2.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [ commit-msg ]
+
+  - repo: https://github.com/psf/black
+    rev: '22.3.0'
+    hooks:
+      - id: black
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.5.4
+    hooks:
+      - id: isort
+
+  - repo: https://github.com/john-hen/Flake8-pyproject
+    rev: 1.0.1
+    hooks:
+      - id: Flake8-pyproject
+        additional_dependencies: [
+        'flake8-print==5.0.0',
+        ]

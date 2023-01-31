@@ -12,17 +12,7 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = (
-            "id",
-            "username",
-            "password",
-            "first_name",
-            "last_name",
-            "email",
-            "gender",
-            "role",
-            "study_group"
-        )
+        fields = ("id", "username", "password", "first_name", "last_name", "email", "gender", "role", "study_group")
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
@@ -31,18 +21,9 @@ class UserSerializer(ModelSerializer):
 
 class UserListRetrieveSerializer(ModelSerializer):
     """Сериализатор для списка студентов-Пользователей и конкретного студента-Пользователя"""
+
     study_group = StudyGroupRetrieveSerializer()
 
     class Meta:
         model = User
-        fields = (
-            "id",
-            "username",
-            "password",
-            "first_name",
-            "last_name",
-            "email",
-            "gender",
-            "role",
-            "study_group"
-        )
+        fields = ("id", "username", "password", "first_name", "last_name", "email", "gender", "role", "study_group")

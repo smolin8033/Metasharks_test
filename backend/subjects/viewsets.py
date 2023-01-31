@@ -5,12 +5,12 @@ from rest_framework.viewsets import ModelViewSet
 
 from config.permissions import DirectorPermission
 from subjects.models import Subject
-from subjects.serializers import SubjectSerializer, SubjectListSerializer
+from subjects.serializers import SubjectListSerializer, SubjectSerializer
 
 
 @extend_schema(tags=["Учебные дисциплины"])
 class SubjectViewSet(ModelViewSet):
-    http_method_names = ['get', 'post', 'patch', 'delete']
+    http_method_names = ["get", "post", "patch", "delete"]
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticated, DirectorPermission]
 
