@@ -77,6 +77,3 @@ class UserFactory(DjangoModelFactory):
     class Meta:
         model = User
         django_get_or_create = ("username",)
-
-
-# from tests.faked_data.factories import UserFactory as U

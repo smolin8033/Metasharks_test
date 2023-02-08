@@ -3,7 +3,7 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
-from config.permissions import MentorPermission
+from common.mixins.permissions import MentorPermission
 from groups.models import StudyGroup
 from groups.serializers import StudyGroupListSerializer, StudyGroupSerializer
 

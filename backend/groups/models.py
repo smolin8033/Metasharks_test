@@ -3,6 +3,7 @@ from django.db.models import Q
 
 from fields.models import Field
 from subjects.models import Subject
+from users.constants import MAX_STUDENTS_NUMBER
 
 
 class StudyGroup(models.Model):
@@ -16,7 +17,7 @@ class StudyGroup(models.Model):
     count_students = models.IntegerField(default=0)
 
     class Meta:
-        constraints = [models.CheckConstraint(check=Q(count_students__lte=20), name="students_lte_20")]
+        constraints = [models.CheckConstraint(check=Q(count_students__lte=MAX_STUDENTS_NUMBER), name="students_lte_20")]
 
     def __str__(self):
         return str(self.number)

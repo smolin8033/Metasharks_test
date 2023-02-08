@@ -3,22 +3,9 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
-from config.permissions import MentorPermission
+from common.mixins.permissions import MentorPermission
 from users.models import User
 from users.serializers import UserListRetrieveSerializer, UserSerializer
-
-# TODO action add student
-
-# TODO constraint
-# TODO test constraint max 20
-
-# TODO celery + queries + excel
-# TODO endpoint
-# TODO celery tests
-
-# TODO mypy
-
-# TODO final linting
 
 
 @extend_schema(tags=["Пользователи"])

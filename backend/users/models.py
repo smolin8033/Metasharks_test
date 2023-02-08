@@ -3,8 +3,7 @@ from django.db import IntegrityError, models
 
 from fields.models import Field
 from groups.models import StudyGroup
-from users.constants import GENDER_CHOICES, ROLE_CHOICES
-from users.validators import restrict_number
+from users.constants import GENDER_CHOICES, MAX_STUDENTS_NUMBER, ROLE_CHOICES
 
 
 class User(AbstractUser):
@@ -21,7 +20,6 @@ class User(AbstractUser):
         blank=True,
         null=True,
         related_name="students",
-        validators=(restrict_number,),
     )
 
     USERNAME_FIELD = "username"
@@ -30,11 +28,11 @@ class User(AbstractUser):
     objects = UserManager()
 
     def __str__(self):
-        return f"Role: {self.role}. Username {self.username}. Name: {self.first_name} {self.last_name}"
+        return f"{self.first_name} {self.last_name}"
 
     def save(self, *args, **kwargs):
         if self.study_group:
-            if self.study_group.count_students < 20:
+            if self.study_group.count_students < MAX_STUDENTS_NUMBER:
                 super().save(*args, **kwargs)
                 self.study_group.count_students += 1
                 self.study_group.save()
